@@ -1,0 +1,102 @@
+# 15-puzzle representation
+
+DOMAIN tile 16 # define a domain called "tile" consisting of 16 constants
+
+constants
+		b 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 # these are the constant 
+											  # (b is for blank)
+
+16		# a state is a vector of length 16
+
+tile tile tile tile tile tile tile tile tile tile tile tile tile tile tile tile  
+
+# Moving blank alongside the perimeter
+
+b x - - - - - - - - - - - - - - => x b - - - - - - - - - - - - - - LABEL Blank_FromB0_ToB1
+x b - - - - - - - - - - - - - - => b x - - - - - - - - - - - - - - LABEL Blank_FromB1_ToB0
+- b x - - - - - - - - - - - - - => - x b - - - - - - - - - - - - - LABEL Blank_FromB1_ToB2
+- x b - - - - - - - - - - - - - => - b x - - - - - - - - - - - - - LABEL Blank_FromB2_ToB1
+- - b x - - - - - - - - - - - - => - - x b - - - - - - - - - - - - LABEL Blank_FromB2_ToB3
+- - x b - - - - - - - - - - - - => - - b x - - - - - - - - - - - - LABEL Blank_FromB3_ToB2
+
+- - - b - - - x - - - - - - - - => - - - x - - - b - - - - - - - - LABEL Blamk_FromB3_ToB7
+- - - x - - - b - - - - - - - - => - - - b - - - x - - - - - - - - LABEL Blamk_FromB7_ToB3
+- - - - - - - b - - - x - - - - => - - - - - - - x - - - b - - - - LABEL Blank_FromB7_toB11
+- - - - - - - x - - - b - - - - => - - - - - - - b - - - x - - - - LABEL Blank_FromB11_toB7
+- - - - - - - - - - - b - - - x => - - - - - - - - - - - x - - - b LABEL Blank_FromB11_ToB15
+- - - - - - - - - - - x - - - b => - - - - - - - - - - - b - - - x LABEL Blank_FromB15_ToB11
+
+- - - - - - - - - - - - b x - - => - - - - - - - - - - - - x b - - LABEL Blank_FromB12_ToB13
+- - - - - - - - - - - - x b - - => - - - - - - - - - - - - b x - - LABEL Blank_FromB13_ToB12
+- - - - - - - - - - - - - b x - => - - - - - - - - - - - - - x b - LABEL Blank_FromB13_ToB14
+- - - - - - - - - - - - - x b - => - - - - - - - - - - - - - b x - LABEL Blank_FromB14_ToB13
+- - - - - - - - - - - - - - b x => - - - - - - - - - - - - - - x b LABEL Blank_FromB14_ToB15
+- - - - - - - - - - - - - - x b => - - - - - - - - - - - - - - b x LABEL Blank_FromB15_ToB14
+
+b - - - x - - - - - - - - - - - => x - - - b - - - - - - - - - - - LABEL Blank_FromB0_ToB4
+x - - - b - - - - - - - - - - - => b - - - x - - - - - - - - - - - LABEL Blank_FromB4_ToB0
+- - - - b - - - x - - - - - - - => - - - - x - - - b - - - - - - - LABEL Blank_FromB4_ToB8
+- - - - x - - - b - - - - - - - => - - - - b - - - x - - - - - - - LABEL Blank_FromB8_ToB4
+- - - - - - - - b - - - x - - - => - - - - - - - - x - - - b - - - LABEL Blank_FromB8_ToB12
+- - - - - - - - x - - - b - - - => - - - - - - - - b - - - x - - - LABEL Blank_FromB12_ToB8
+
+# Moving blank alongside column b1
+
+- b - - - x - - - - - - - - - - => - x - - - b - - - - - - - - - - LABEL Blank_FromB1_ToB5
+- x - - - b - - - - - - - - - - => - b - - - x - - - - - - - - - - LABEL Blank_FromB5_ToB1
+- - - - - b - - - x - - - - - - => - - - - - x - - - b - - - - - - LABEL Blank_FromB5_ToB9
+- - - - - x - - - b - - - - - - => - - - - - b - - - x - - - - - - LABEL Blank_FromB9_ToB5
+- - - - - - - - - b - - - x - - => - - - - - - - - - x - - - b - - LABEL Blank_FromB9_ToB13
+- - - - - - - - - x - - - b - - => - - - - - - - - - b - - - x - - LABEL Blank_FromB13_ToB9
+
+# Moving blank alongside line b5
+
+- - - - x b - - - - - - - - - - => - - - - x b - - - - - - - - - - LABEL Blank_FromB5_ToB4
+- - - - b x - - - - - - - - - - => - - - - b x - - - - - - - - - - LABEL Blank_FromB4_ToB5
+- - - - - b x - - - - - - - - - => - - - - - x b - - - - - - - - - LABEL Blank_FromB5_toB6
+- - - - - x b - - - - - - - - - => - - - - - b x - - - - - - - - - LABEL Blank_FromB6_toB5
+- - - - - - b x - - - - - - - - => - - - - - - x b - - - - - - - - LABEL Blank_FromB6_ToB7
+- - - - - - x b - - - - - - - - => - - - - - - b x - - - - - - - - LABEL Blank_FromB7_ToB6
+
+# Moving alongside line b9
+
+- - - - - - - - x b - - - - - - => - - - - - - - - b x - - - - - - LABEL Blank_FromB9_ToB8
+- - - - - - - - b x - - - - - - => - - - - - - - - x b - - - - - - LABEL Blank_FromB8_ToB9
+- - - - - - - - - b x - - - - - => - - - - - - - - - x b - - - - - LABEL Blank_FromB9_ToB10
+- - - - - - - - - x b - - - - - => - - - - - - - - - b x - - - - - LABEL Blank_FromB10_ToB9
+- - - - - - - - - - b x - - - - => - - - - - - - - - - x b - - - - LABEL Blank_FromB10_ToB11
+- - - - - - - - - - x b - - - - => - - - - - - - - - - b x - - - - LABEL Blank_FromB11_ToB10 
+
+# Moving alongside column b6
+
+- - x - - - b - - - - - - - - - => - - b - - - x - - - - - - - - - LABEL Blank_FromB6_T0B2
+- - b - - - x - - - - - - - - - => - - x - - - b - - - - - - - - - LABEL Blank_FromB2_T0B6
+- - - - - - b - - - x - - - - - => - - - - - - x - - - b - - - - - LABEL Blank_FromB6_ToB10
+- - - - - - x - - - b - - - - - => - - - - - - b - - - x - - - - - LABEL Blank_FromB10_ToB6
+- - - - - - - - - - b - - - x - => - - - - - - - - - - b - - - x - LABEL Blank_FromB10_To14
+- - - - - - - - - - x - - - b - => - - - - - - - - - - x - - - b - LABEL Blank_FromB14_To10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GOAL b 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
