@@ -26,6 +26,10 @@ psvn2c_abstraction.c:
 	$(CC) $(OPT) ../algoritmos/dfs.c -include $< -o $@
 	rm -f $*.c
 
+%.distSummary: %.c ../global/distSumarry.cpp
+	$(CXX) $(OPT) ../global/distSummary.cpp -include $< -o $@
+	rm -f $*.c
+
 .PHONY: clean
 clean:
 	rm -fr *.succ psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~

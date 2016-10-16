@@ -1,7 +1,7 @@
 CC = gcc
 CXX = g++
 OPT = -g -Wall -O3 -Wno-unused-function -Wno-unused-variable
-PSVNOPT = --no_state_map --no_abstraction --no_backwards_moves --history_len=1
+PSVNOPT = --no_state_map --no_abstraction --no_backwards_moves --history_len=2
 
 psvn2c_core.c:
 	cp ../src/psvn2c_core.c ./psvn2c_core.c
@@ -29,6 +29,10 @@ psvn2c_abstraction.c:
 %.iterative: %.c ../algoritmos/iterative.c
 	$(CC) $(OPT) ../algoritmos/iterative.c -include $< -o $@
 	rm -f $*.c
+
+%.distSummary: %.c ../global/distSummary.cpp
+	$(CXX) $(OPT) ../global/distSummary.cpp -include $< -o $@
+	rm -f $*.c[]
 
 .PHONY: clean
 clean:
