@@ -18,10 +18,6 @@ psvn2c_abstraction.c:
 
 .PRECIOUS: %.c
 
-%.iterativedfs: %.c ../global/iterativedfs.c
-	$(CXX) $(OPT) ../global/iterativedfs.c -include $< -o $@
-	rm -f $*.c
-	
 %.dfs: %.c ../global/dfs.c
 	$(CXX) $(OPT) ../global/dfs.c -include $< -o $@
 	rm -f $*.c
