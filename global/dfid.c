@@ -30,7 +30,7 @@ long int dfs(state_t state, int history, int d, int bound, long * nStates, clock
   if (d > bound) {
     return -1;
   }
-  if (timeinmiliseconds(start, clock()) > 600.0){
+  if (timeinmiliseconds(start, clock()) > 300.0){
     //more than 10 minutes
     return -2;
   }

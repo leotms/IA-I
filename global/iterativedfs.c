@@ -4,6 +4,10 @@
 #include <assert.h>
 #include <sys/time.h>
 
+long int totalEstadosPosibles(int longitud){
+  return (longitud == 1 || longitud == 0) ? 1 : totalEstadosPosibles(longitud - 1)*longitud;
+}
+
 long int iterative_deepening_dfs(state_t state, int history, int bound, int d) {
   if (d > bound){
     return 0;
@@ -30,11 +34,11 @@ long int iterative_deepening_dfs(state_t state, int history, int bound, int d) {
 
 int main(int argc, char **argv ) {
 
-	char str[3];
-	char *ptr;
+	char    str[3];
+	char    *ptr;
   state_t state;
-	int bound;
-  int bf = false;
+	int     bound;
+  int     bf = false;
 
 	if (argc < 2) {
 		printf("Missing argument.\nPlease run ./<problemname>.iterativedfs <depth> ");
@@ -65,9 +69,12 @@ int main(int argc, char **argv ) {
 	printf("--------------------------------------\n");
 
   // Recorremos en cada nivel.
-  long  numeroTotalNodos    = 0;
-  float branching_factor    = 0;
-  long  totalNivelAnterior  = 1;  //Siempre contamos la raiz.
+  long  numeroTotalNodos     = 0;
+  float branching_factor     = 0;
+  long  totalNivelAnterior   = 1;  //Siempre contamos la raiz.
+  long  EstadosPosibles      = totalEstadosPosibles(sizeof(state.vars)/sizeof(state.vars[0]));
+  int   minProfundidad       = 0;
+
   for(int i=0; i<=bound; i++){
       int d;
 			// Obtenemos el stado goal, cada vez que iteremos.
@@ -85,9 +92,14 @@ int main(int argc, char **argv ) {
       if (bf) {
         branching_factor   = (float)estadosEnNivel/(float)totalNivelAnterior;
         totalNivelAnterior = estadosEnNivel;
+        minProfundidad = (estadosEnNivel > EstadosPosibles) ? i : 0;
         printf("      %f", branching_factor);
       }
       printf("\n");
   }
+
+    if (bf) {
+      printf("Profundida minima: %d\n", minProfundidad);
+    }
     return 0;
 }
