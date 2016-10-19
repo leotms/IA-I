@@ -73,7 +73,7 @@ int main(int argc, char **argv ) {
   float branching_factor     = 0;
   long  totalNivelAnterior   = 1;  //Siempre contamos la raiz.
   long  EstadosPosibles      = totalEstadosPosibles(sizeof(state.vars)/sizeof(state.vars[0]));
-  int   minProfundidad       = 0;
+  int   minProfundidad       = bound*2;
 
   for(int i=0; i<=bound; i++){
       int d;
@@ -92,7 +92,7 @@ int main(int argc, char **argv ) {
       if (bf) {
         branching_factor   = (float)estadosEnNivel/(float)totalNivelAnterior;
         totalNivelAnterior = estadosEnNivel;
-        minProfundidad = (estadosEnNivel > EstadosPosibles) ? i : 0;
+        minProfundidad = (estadosEnNivel > EstadosPosibles && i < minProfundidad) ? i : 0;
         printf("      %f", branching_factor);
       }
       printf("\n");

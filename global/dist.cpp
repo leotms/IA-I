@@ -10,61 +10,72 @@ Copyright (C) 2013 by the PSVN Research Group, University of Alberta
 
 #include <vector>
 #include "priority_queue.hpp"
+#include <stdlib.h>
+#include <stdio.h>
+#include <inttypes.h>
+#include <assert.h>
+#include <sys/time.h>
 
-int main(int argc, char **argv) {
-    state_t state, child;   // NOTE: "child" will be a predecessor of state, not a successor
-    int d, ruleid;
-    ruleid_iterator_t iter;
+int main(int argc, char **argv ) {
 
-    PriorityQueue<state_t> open; // used for the states we have generated but not yet expanded (the OPEN list)
-    state_map_t *map = new_state_map(); // contains the cost-to-goal for all states that have been generated
-    FILE *file; // the final state_map is written to this file if it is provided (command line argument)
+    char str[3];
+    char *ptr;
+    state_t state;
+    int bound;
+    int bf = false;
 
-    // add goal states
-    first_goal_state(&state, &d);
-    do {
-        state_map_add(map, &state, 0);
-        open.Add(0, 0, state);
-    } while( next_goal_state(&state, &d) );
-
-    d = 0;
-    while( !open.Empty() ) {
-        // get current distance from goal; since operator costs are
-        // non-negative this distance is monotonically increasing
-        d = open.CurrentPriority();
-
-        // remove top state from priority state
-        state = open.Top();
-        open.Pop();
-        
-        // check if we already expanded this state.
-        // (entries on the open list are not deleted if a cheaper path to a state is found)
-        const int *best_dist = state_map_get(map, &state);
-        assert(best_dist != NULL);
-        if( *best_dist < d ) continue;
-        
-        // print the distance then the state
-        printf("%d  ",d);
-        print_state(stdout,&state);
-        printf(" \n");
-
-        // look at all predecessors of the state
-        init_fwd_iter(&iter, &state);
-        while( (ruleid = next_ruleid(&iter) ) >= 0 ) {
-            apply_fwd_rule(ruleid, &state, &child);
-            const int child_d = d + get_fwd_rule_cost(ruleid);
-
-            // check if either this child has not been seen yet or if
-            // there is a new cheaper way to get to this child.
-            const int *old_child_d = state_map_get(map, &child);
-            if( (old_child_d == NULL) || (*old_child_d > child_d) ) {
-                // add to open with the new distance
-                state_map_add(map, &child, child_d);
-                open.Add(child_d, child_d, child);
-            }
-        }
+    if (argc < 2) {
+        printf("Missing argument.\nPlease run ./<problemname>.iterativedfs <depth> ");
+        printf("or ./<problemname>.iterativedfs <depth> <-b> if branching factor is desired.\n");
+    return 0;
+    } else if (argc == 3 && strcmp(argv[2], "-b") == 0) {
+        bf = true;
     }
-    
+
+    bound = strtol(argv[1], &ptr, 10);
+    if( bound < 0 ) {
+        printf("Error: invalid depth entered.\n");
+        return 0;
+    }
+
+  // table formatting
+    printf("\nNumber of states will be calculated until depht %d\n",bound);
+  if (bf) {
+    printf("Branching factor will be displayed.\n");
+  };
+  printf("\n\n");
+    printf("DEPTH\t| #STATES");
+  if (bf) {
+    printf("\t| BRANCHING FACTOR");
+  }
+
+  printf("\n");
+    printf("--------------------------------------\n");
+
+  // Recorremos en cada nivel.
+  long  numeroTotalNodos    = 0;
+  float branching_factor    = 0;
+  long  totalNivelAnterior  = 1;  //Siempre contamos la raiz.
+  for(int i=0; i<=bound; i++){
+      int d;
+            // Obtenemos el stado goal, cada vez que iteremos.
+            first_goal_state(&state, &d);
+            d = 0;
+            // Obtenemos el stado goallong
+            int history = init_history;
+      long totalHastaNivel = iterative_deepening_dfs(state , history, i, d);
+      //printf("Nivel anterior %d.\n",nivelanterior);
+      long aux = totalHastaNivel;
+      long estadosEnNivel   = totalHastaNivel - numeroTotalNodos;
+      numeroTotalNodos = aux;
+            //Imprimimos el numero de estados.s
+      printf("%d\t %ld", i, estadosEnNivel);
+      if (bf) {
+        branching_factor   = (float)estadosEnNivel/(float)totalNivelAnterior;
+        totalNivelAnterior = estadosEnNivel;
+        printf("      %f", branching_factor);
+      }
+      printf("\n");
+  }
     return 0;
 }
-
