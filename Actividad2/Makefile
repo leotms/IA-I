@@ -19,10 +19,10 @@ psvn2c_abstraction.c:
 
 .PRECIOUS: %.c
 
-%.dfs: %.c ../global/dfs.c
-	$(CXX) $(OPT) ../global/dfs.c -include $< -o $@
+%.dfid: %.c ../global/dfid.c
+	$(CXX) $(OPT) ../global/dfid.c -include $< -o $@
 	rm -f $*.c
 
 .PHONY: clean
 clean:
-	rm -fr *.succ *.dist *.iterativedfs psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~ *.c
+	rm -fr *.dfid psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~ *.c
