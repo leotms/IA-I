@@ -18,18 +18,10 @@ psvn2c_abstraction.c:
 
 .PRECIOUS: %.c
 
-%.succ: %.c ../global/succ.c
-	$(CC) $(OPT) ../global/succ.c -include $< -o $@
-	rm -f $*.c
-
-%.dist: %.c ../global/dist.cpp
-	$(CXX) $(OPT) ../global/dist.cpp -include $< -o $@
-	rm -f $*.c
-
-%.distSummary: %.c ../global/distSummary.cpp
-	$(CXX) $(OPT) ../global/distSummary.cpp -include $< -o $@
+%.astar: %.c ../global/astar.cpp
+	$(CXX) $(OPT) ../global/astar.cpp -include $< -o $@
 	rm -f $*.c
 
 .PHONY: clean
 clean:
-	rm -fr *.succ *.dist *.distSummary psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~
+	rm -fr *.astar psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~
