@@ -1,0 +1,80 @@
+# 11 puzzle, 4x3 representation
+
+DOMAIN tile 12 # define a domain called "tile" cosisiting of 12 constant
+
+b 1 2 3 4 5 6 7 8 9 10 11 # these are the constants (b is for blank)
+
+12	# a state is a vector of length 12
+
+tile tile tile tile tile tile tile tile tile tile tile tile 
+
+# Moving blank alongside the perimeter
+
+b x - - - - - - - - - - => x b - - - - - - - - - - LABEL Blank_FromB0_ToB1
+x b - - - - - - - - - - => b x - - - - - - - - - - LABEL Blank_FromB1_ToB0
+- b x - - - - - - - - - => - x b - - - - - - - - - LABEL Blank_FromB1_ToB2
+- x b - - - - - - - - - => - b x - - - - - - - - - LABEL Blank_FromB2_ToB1
+
+- - b - - x - - - - - - => - - x - - b - - - - - - LABEL Blank_FromB2_ToB5
+- - x - - b - - - - - - => - - b - - x - - - - - - LABEL Blank_FromB5_ToB2
+- - - - - b - - x - - - => - - - - - x - - b - - - LABEL Blank_FromB5_ToB8
+- - - - - x - - b - - - => - - - - - b - - x - - - LABEL Blank_FromB8_ToB5
+- - - - - - - - b - - x => - - - - - - - - x - - b LABEL Blank_FromB8_ToB11
+- - - - - - - - x - - b => - - - - - - - - b - - x LABEL Blank_FromB11_ToB5
+
+- - - - - - - - - - x b => - - - - - - - - - - b x LABEL Blank_FromB11_ToB10
+- - - - - - - - - - b x => - - - - - - - - - - x b LABEL Blank_FromB10_ToB11
+- - - - - - - - - x b - => - - - - - - - - - b x - LABEL Blank_FromB10_ToB9
+- - - - - - - - - b x - => - - - - - - - - - x b - LABEL Blank_FromB9_ToB10
+
+- - - - - - x - - b - - => - - - - - - b - - x - - LABEL Blank_FromB9_ToB6
+- - - - - - b - - x - - => - - - - - - x - - b - - LABEL Blank_FromB6_ToB9
+- - - x - - b - - - - - => - - - b - - x - - - - - LABEL Blank_FromB6_ToB3
+- - - b - - x - - - - - => - - - x - - b - - - - - LABEL Blank_FromB3_ToB6
+x - - b - - - - - - - - => b - - x - - - - - - - - LABEL Blank_FromB3_ToB0
+b - - x - - - - - - - - => x - - b - - - - - - - - LABEL Blank_FromB0_ToB3
+
+# Moving blank alongside column b1
+
+- b - - x - - - - - - - => - x - - b - - - - - - - LABEL Blank_FromB1_ToB4
+- x - - b - - - - - - - => - b - - x - - - - - - - LABEL Blank_FromB4_ToB1
+- - - - b - - x - - - - => - - - - x - - b - - - - LABEL Blank_FromB4_ToB7
+- - - - x - - b - - - - => - - - - b - - x - - - - LABEL Blank_FromB7_ToB4
+- - - - - - - b - - x - => - - - - - - - x - - b - LABEL Blank_FromB7_ToB10
+- - - - - - - x - - b - => - - - - - - - b - - x - LABEL Blank_FromB10_ToB7
+
+# Moving blank alongside line b7
+
+- - - - - - x b - - - - => - - - - - - b x - - - - LABEL Blank_FromB7_ToB6
+- - - - - - b x - - - - => - - - - - - x b - - - - LABEL Blank_FromB6_ToB7
+- - - - - - - b x - - - => - - - - - - - x b - - - LABEL Blank_FromB7_ToB8
+- - - - - - - x b - - - => - - - - - - - b x - - - LABEL Blank_FromB8_ToB7
+
+# Moving blank alongside line b4
+
+- - - x b - - - - - - - => - - - b x - - - - - - - LABEL Blank_FromB4_ToB3
+- - - b x - - - - - - - => - - - x b - - - - - - - LABEL Blank_FromB3_ToB4
+- - - - b x - - - - - - => - - - - x b - - - - - - LABEL Blank_FromB4_ToB5
+- - - - x b - - - - - - => - - - - b x - - - - - - LABEL Blank_FromB5_ToB4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
