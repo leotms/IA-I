@@ -4,15 +4,14 @@
 // To count the number of states in a given problem.
 // Also computes the branching factor if needed.
 
-
 // Calculates the total of possible states
-long int findTotalPossibleStates(int longitud){
+unsigned long long int findTotalPossibleStates(int longitud){
   return (longitud == 1 || longitud == 0) ? 1 : findTotalPossibleStates(longitud - 1)*longitud;
 }
 
 // Iterative Deepening DFS modification to count the number of states
 // instead of finding a goal state.
-long int iterative_deepening_dfs(state_t state, int history, int bound, int d) {
+unsigned long long int iterative_deepening_dfs(state_t state, int history, int bound, int d) {
   if (d > bound){
     return 0;
   }
@@ -23,13 +22,13 @@ long int iterative_deepening_dfs(state_t state, int history, int bound, int d) {
 
   init_fwd_iter(&iter, &state);
 
-  long acum = 0;
+  unsigned long long acum = 0;
   while((ruleid = next_ruleid(&iter)) >= 0 ) {
       // we prune the search tree
 			if (fwd_rule_valid_for_history(history, ruleid) != 0){
 				apply_fwd_rule(ruleid, &state, &child);
 				int next_history = next_fwd_history(history, ruleid);
-				long aux_acum     = iterative_deepening_dfs(child, next_history, bound, d + 1);
+				unsigned long long aux_acum     = iterative_deepening_dfs(child, next_history, bound, d + 1);
 			  acum = acum + aux_acum;
 			}
   }
@@ -71,13 +70,13 @@ int main(int argc, char **argv ) {
   }
 
   printf("\n");
-	printf("--------------------------------------\n");
+	printf("--------------------------------------");
 
   //  we update this variables while we go deeper the search tree
-  long  totalNodesNumber     = 0;
+  unsigned long long  totalNodesNumber     = 0;
   float branching_factor     = 0;
-  long  totalPreviousLevel   = 1;  //always cout root
-  long  totalPossibleStates  = findTotalPossibleStates(sizeof(state.vars)/sizeof(state.vars[0]));
+  unsigned long long  totalPreviousLevel   = 1;  //always cout root
+  unsigned long long  totalPossibleStates  = findTotalPossibleStates(sizeof(state.vars)/sizeof(state.vars[0]));
   int   minDepth       = 0;
 
   for(int i = 0; i<=bound; i++){
@@ -87,15 +86,17 @@ int main(int argc, char **argv ) {
 			d = 0;
 			// we set the history = 0
 			int history = init_history;
-      long totalNodesUntilLevel = iterative_deepening_dfs(state , history, i, d);
+      unsigned long long totalNodesUntilLevel = iterative_deepening_dfs(state , history, i, d);
 
-      long aux = totalNodesUntilLevel;
-      long statesInLevel   = totalNodesUntilLevel - totalNodesNumber;
+      unsigned long long aux = totalNodesUntilLevel;
+      unsigned long long statesInLevel   = totalNodesUntilLevel - totalNodesNumber;
       totalNodesNumber = aux;
 
       // we show branching factor:
       if (bf && i > 0) {
-        minDepth = ( minDepth == 0 && statesInLevel > totalPossibleStates) ? i : 0;
+        if ((minDepth == 0) && (statesInLevel > totalPossibleStates)){
+          minDepth = i;
+        }
         branching_factor   = (float)statesInLevel/(float)totalPreviousLevel;
         totalPreviousLevel = statesInLevel;
         printf("\t\t%f", branching_factor);
@@ -103,7 +104,7 @@ int main(int argc, char **argv ) {
 
       // print depht and  number of states
       printf("\n");
-      printf("%d\t %ld", i, statesInLevel);
+      printf("%d\t %lld", i, statesInLevel);
 
   }
 
