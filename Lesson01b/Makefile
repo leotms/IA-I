@@ -30,8 +30,8 @@ psvn2c_abstraction.c:
 	$(CC) $(OPT) ../algoritmos/iterative.c -include $< -o $@
 	rm -f $*.c
 
-%.distSummary: %.c ../global/distSummary.cpp
-	$(CXX) $(OPT) ../global/distSummary.cpp -include $< -o $@
+%.bfs: %.c ../global/bfs.cpp
+	$(CXX) $(OPT) ../global/bfs.cpp -include $< -o $@
 	rm -f $*.c[]
 
 .PHONY: clean

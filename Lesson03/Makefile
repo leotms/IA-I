@@ -22,6 +22,10 @@ psvn2c_abstraction.c:
 	$(CXX) $(OPT) ../global/astar.cpp -include $< -o $@
 	rm -f $*.c
 
+%.idastar: %.c ../global/idastar.cpp
+	$(CXX) $(OPT) ../global/idastar.cpp -include $< -o $@
+	rm -f $*.c
+
 .PHONY: clean
 clean:
-	rm -fr *.astar psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~
+	rm -fr *.astar *.idastar psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~
