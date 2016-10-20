@@ -43,8 +43,6 @@ int manhatan(state_t state){
 int gap(state_t state) {
 
  print_state(stdout, &state);
- printf("\n");
-  printf("Entro en la Heuristica\n");
 
   int h = 0;
   int len_state = sizeof(state.vars)/sizeof(state.vars[0]);
@@ -56,7 +54,6 @@ int gap(state_t state) {
     } else if (abs(state.vars[i] - state.vars[i+1]) > 1) {
       h += 1;
     }
-    printf("Gap = %d\n",h);
   }
 
   return h;
@@ -70,7 +67,6 @@ float timeinmiliseconds(clock_t start, clock_t stop) {
 }
 
 char * domainname(char * fullname){
-  printf("%s\n",fullname);
 
   char * domain = (char *) malloc(50*sizeof(char));
   sscanf(fullname,"./%[^.]:", domain);
@@ -138,7 +134,7 @@ int best_first_seach(int (*h)(state_t), state_t state, clock_t start, long * nSt
     if (is_goal(&state)){
       return *state_map_get(distancias, &state);
     }
-    if (timeinmiliseconds(start, clock()) > 2.0) {
+    if (timeinmiliseconds(start, clock()) > 300.0) {
       return -2;
     }
 

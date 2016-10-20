@@ -1,8 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include <assert.h>
-#include <sys/time.h>
+#include <vector>
 #include <time.h>
 
 // calculates time difference in miliseconds
@@ -28,6 +24,7 @@ long int dfs(state_t state, int history, int d, int bound, long * nStates, clock
   }
   if (timeinmiliseconds(start, clock()) > 300.0){
     //more than 5 minutes
+    printf("CHAO!");
     return -2;
   }
   if (is_goal(&state)){
