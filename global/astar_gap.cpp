@@ -98,10 +98,17 @@ int best_first_seach(state_t state, long * nStates, clock_t start){
 
     // check if goal
     if (is_goal(&state)){
-      return *state_map_get(distancias, &state);
+      int distance = *state_map_get(distancias, &state);
+      destroy_state_map(distancias);
+      destroy_state_map(histories);
+      open.Clear();
+      return distance;
     }
     // check if time's up
     if (timeinmiliseconds(start, clock()) > 300.0){
+      destroy_state_map(distancias);
+      destroy_state_map(histories);
+      open.Clear();
       // Means the algorithm ran more than 5minutes
       return -2;
     };
