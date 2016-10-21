@@ -1,10 +1,16 @@
-Compile with:
- 
-	make <name_of_the_problem>.iterative_dfs N_SUFFIX=<NUM>
+COMPILE WITH:
 
-where <NUM> is the length of the suffix for tree pruning. 
+  make <name_of_the_problem>.stateCount N=<NUM>
+  where <NUM> is the length of the suffix for tree pruning.
 
 EXAMPLE:
-	
-	make 15puzzle.iteterative_dfs N_SUFFIX=2
 
+  make Hanoi14x4.stateCount N=1
+
+RUN:
+
+  ./<name_of_the_problem>.stateCount <depth>
+
+RUN EXAMPLE:
+
+  ./Hanoi14x4.stateCount 12

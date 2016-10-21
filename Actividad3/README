@@ -1,0 +1,18 @@
+COMPILE WITH:
+
+  make  <name_of_the_problem>.dfid N=<NUM>
+  where <NUM> is the length of the suffix for tree pruning.
+
+EXAMPLE:
+
+  make Hanoi14x4.dfid N=1
+
+RUN:
+
+  ./<name_of_the_problem>.dfid <inputfile> <outputfile>
+	where <inputfile> is the file where instances are defined
+  and <outputfile> is where the data will be stored.
+
+RUN EXAMPLE:
+
+  ./Hanoi14x4.dfid ../instances/tower14_4.txt results/tower14_4.csv

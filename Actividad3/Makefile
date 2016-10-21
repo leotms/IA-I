@@ -19,8 +19,8 @@ psvn2c_abstraction.c:
 
 .PRECIOUS: %.c
 
-%.dfid: %.c ../global/dfid.c
-	$(CXX) $(OPT) ../global/dfid.c -include $< -o $@
+%.dfid: %.c ../global/dfid.cpp
+	$(CXX) $(OPT) ../global/dfid.cpp -include $< -o $@
 	rm -f $*.c
 
 .PHONY: clean

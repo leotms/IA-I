@@ -1,11 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include <assert.h>
-#include <sys/time.h>
+#include <vector>
 #include <time.h>
-
-#define  MAX_LINE_LENGTH 999
 
 // calculates time difference in miliseconds
 float timeinmiliseconds(clock_t start, clock_t stop) {
@@ -13,7 +7,6 @@ float timeinmiliseconds(clock_t start, clock_t stop) {
 }
 
 char * domainname(char * fullname){
-  printf("%s\n",fullname);
 
   char * domain = (char *) malloc(50*sizeof(char));
   sscanf(fullname,"./%[^.]:", domain);
@@ -25,13 +18,13 @@ char * domainname(char * fullname){
 // searches for goal using deeping iterative first search
 long int dfs(state_t state, int history, int d, int bound, long * nStates, clock_t start) {
 
-  // printf("%f\n",timeinmiliseconds(start, clock()));
   *nStates = *nStates + 1;
   if (d > bound) {
     return -1;
   }
   if (timeinmiliseconds(start, clock()) > 300.0){
-    //more than 10 minutes
+    //more than 5 minutes
+    printf("CHAO!");
     return -2;
   }
   if (is_goal(&state)){
@@ -45,14 +38,15 @@ long int dfs(state_t state, int history, int d, int bound, long * nStates, clock
   init_fwd_iter(&iter, &state);
 
   while((ruleid = next_ruleid(&iter)) >= 0) {
+      // we prune the search tree
 			if (fwd_rule_valid_for_history(history, ruleid) != 0){
 				apply_fwd_rule(ruleid, &state, &child);
 				int next_history = next_fwd_history(history, ruleid);
 				long distance = dfs(child, next_history, d + 1, bound, nStates, start);
   		  if (distance >= 0){
-          return distance  + 1;
+          return distance + 1;
         } else if (distance == -2){
-          return distance;
+          return -2;
         }
 			}
   }
@@ -67,7 +61,7 @@ int main(int argc, char **argv ) {
   FILE * outputfile;
 
   if (argc < 3) {
-    printf("Missing argument.\nPlease compie with ./<problemname>.dfs <inputfile> <outputfile>\n");
+    printf("Missing argument.\nPlease run with ./<problemname>.dfid <inputfile> <outputfile>\n");
     return 0;
   }
 
@@ -89,7 +83,7 @@ int main(int argc, char **argv ) {
     int nchars = read_state(line, &state);
     if( nchars <= 0 ) {
         printf("Error: invalid state in file.\n");
-        return 0;
+        continue;
     }
 
     int history   = init_history;
@@ -119,8 +113,10 @@ int main(int argc, char **argv ) {
     } else {
       fprintf(outputfile,", na, na, na, na\n");
     }
+    printf(".");
   }
 
+  printf("\nResults stored in %s\n",argv[2]);
   return 0;
 
 }

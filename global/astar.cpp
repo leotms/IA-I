@@ -48,7 +48,7 @@ void best_first_search_expansion(state_t state, PriorityQueue<state_t> *q, state
 
 void best_first_seach(int (*h)(state_t)){
 
-  char* estadostr = "3 1 4 5 b 2 6 7 8 9 10 11 12 13 14 15";
+  char * estadostr = "3 1 4 5 B 2 6 7 8 9 10 11";
   // char * estadostr = "B 1 2 3 4 5 6 7 8 9 10 11";
   state_t state;
 

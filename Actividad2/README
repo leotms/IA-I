@@ -1,0 +1,17 @@
+COMPILE WITH:
+
+  make  <name_of_the_problem>.stateCount N=<NUM>
+  where <NUM> is the length of the suffix for tree pruning.
+
+EXAMPLE:
+
+  make Hanoi14x4.stateCount N=1
+
+RUN:
+
+  ./<name_of_the_problem>.stateCount <depth> -b
+	where -b indicates branching factor will be displayed
+
+RUN EXAMPLE:
+
+  ./Hanoi14x4.stateCount 12 -b
