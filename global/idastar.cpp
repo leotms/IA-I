@@ -6,22 +6,50 @@
 #include <assert.h>
 #include <sys/time.h>
 #include <limits.h>
-#include <tuple>
-#include <iostream>
-#include <string>
-#include <stdexcept>
+
+#define GRAY  0
+#define BLACK 1
 
 int h(state_t state){
   return 1;
-}
+};
 
-std::tuple<state_t, int> f_bounded_dfs_visit(state_t state, int bound,int dist){
+struct tuple {
+    state_t *state;
+    int f;
+};
+
+struct tuple f_bounded_dfs_visit(state_t state, int bound,int dist,state_map_t *colores){
   int f;
   int t=INT_MAX;
+  struct tuple paux;
+
+  printf("PADRE: ");
+  print_state(stdout, &state);
+  printf("\n");
+
+  state_map_add(colores, &state, GRAY);
 
   f = dist + h(state);
-  if (f > bound){return std::make_tuple(NULL,f);};
-  if (is_goal(&state)){ return std::make_tuple(state,dist);};
+  printf("%d",bound);
+  printf("\n");
+  printf("%d",f);
+  printf("\n");
+  if (f > bound){
+    printf("bound");
+    printf("\n");
+    paux.state=NULL;
+    paux.f=f;
+    return paux;
+  };
+
+  if (is_goal(&state)){ 
+    printf("goal");
+    printf("\n");
+    paux.state=&state;
+    paux.f=dist;
+    return paux;
+  };
 
   state_t child;
   ruleid_iterator_t iter;
@@ -34,30 +62,38 @@ std::tuple<state_t, int> f_bounded_dfs_visit(state_t state, int bound,int dist){
         printf("HIJOS: ");
         print_state(stdout, &child);
         printf("\n");
+
+        if (state_map_get(colores, &child) != NULL) {
+          continue;
+        }
         int dist2 = dist + get_fwd_rule_cost(ruleid);
 
-        std::tuple<state_t, int> p = f_bounded_dfs_visit(child,bound,dist2)
+        struct tuple p = f_bounded_dfs_visit(child,bound,dist2,colores);
 
-        if (std::get<0>(p) != NULL) {return p;}
-        t = min(t,std::get<1>(p));
-        return (NULL,t);
+        if (p.state != NULL) {return p;}
+        t = (t>p.f)? t :p.f;
+        paux.state=NULL;
+        paux.f=t;
+        return paux;
 			}
 }
 
-void ida_search(int (*h)(state_t)){
+state_t ida_search(int (*h)(state_t)){
 
-  char * estadostr = "3 1 4 5 B 2 6 7 8 9 10 11";
+  char * estadostr = "7 1 2 3 4 5 6 b 8 9 10 11";
   // char * estadostr = "B 1 2 3 4 5 6 7 8 9 10 11";
   state_t state;
+
+  state_map_t *colores = new_state_map();
 
   int nchars = read_state(estadostr, &state);
   int bound =h(state);
   int distInicial=0;
 
   while (true){
-    std::tuple<state_t, int> p = f_bounded_dfs_visit(state, bound,distInicial);
-    if (std::get<0>(p) != NULL) {return std::get<0>(p);}
-    bound = std::get<1>(p);
+    tuple p = f_bounded_dfs_visit(state, bound,distInicial,colores);
+    if (p.state != NULL) {return *p.state;}
+    bound = p.f;
   }
 
 }
