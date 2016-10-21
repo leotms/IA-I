@@ -45,7 +45,7 @@ struct tuple {
     int f;
 };
 
-struct tuple f_bounded_dfs_visit(state_t state, int history, 
+struct tuple f_bounded_dfs_visit(state_t state, int history,
                                  float weigth, int bound, int dist,
                                  long * nStates, clock_t start){
 
@@ -55,8 +55,8 @@ struct tuple f_bounded_dfs_visit(state_t state, int history,
   struct tuple paux;
 
   f = dist + gap(state, weigth);
-  
-  if (is_goal(&state)){ 
+
+  if (is_goal(&state)){
     paux.dist = 0;
     paux.f = dist;
     return paux;
@@ -184,7 +184,9 @@ int main(int argc, char **argv ) {
       fprintf(outputfile,", na, %d, na, na, na\n", h0);
     }
   }
-
+  
+  fclose(inputfile);
+  fclose(outputfile);
   printf("\nResults stored in %s\n",argv[3]);
   return 0;
 

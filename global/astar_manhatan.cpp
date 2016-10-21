@@ -38,7 +38,20 @@ int manhatan(state_t state){
   return h;
 }
 
-void best_first_search_expansion(state_t state, PriorityQueue<state_t> *q, 
+// calculates time difference in miliseconds
+float timeinmiliseconds(clock_t start, clock_t stop) {
+  return ((float)(stop - start) / CLOCKS_PER_SEC);
+}
+
+char * domainname(char * fullname){
+
+  char * domain = (char *) malloc(50*sizeof(char));
+  sscanf(fullname,"./%[^.]:", domain);
+  return domain;
+
+}
+
+void best_first_search_expansion(state_t state, PriorityQueue<state_t> *q,
                                  state_map_t *colores, state_map_t *distancias,
                                  state_map_t * histories){
 

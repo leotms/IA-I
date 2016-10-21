@@ -19,8 +19,12 @@ psvn2c_abstraction.c:
 
 .PRECIOUS: %.c
 
-%.astar: %.c ../global/astar.cpp
-	$(CXX) $(OPT) ../global/astar.cpp -include $< -o $@
+%.astar_gap: %.c ../global/astar_gap.cpp
+	$(CXX) $(OPT) ../global/astar_gap.cpp -include $< -o $@
+	rm -f $*.c
+
+%.astar_manhatan: %.c ../global/astar_manhatan.cpp
+	$(CXX) $(OPT) ../global/astar_manhatan.cpp -include $< -o $@
 	rm -f $*.c
 
 %.heuristica: %.c ./heuristica.cpp
@@ -45,4 +49,4 @@ psvn2c_abstraction.c:
 
 .PHONY: clean
 clean:
-	rm -fr *.heuristica *.idastar_gap *.idastar_manhatan *.widastar_gap *.widastar_manhatan *.astar psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~ *.c
+	rm -fr *.heuristica *.idastar_gap *.idastar_manhatan *.widastar_gap *.widastar_manhatan *.astar_gap *.astar_manhatan psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~ *.c
