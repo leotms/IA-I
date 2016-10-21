@@ -177,7 +177,7 @@ int main(int argc, char **argv ) {
     // total time for the algorithm
     float totalTime = timeinmiliseconds(start,clock());
 
-    fprintf(outputfile,"dfid, gap, %s, ", domainname(argv[0]));
+    fprintf(outputfile,"ida, gap, %s, ", domainname(argv[0]));
     print_state(outputfile, &state);
     if (distance >= 0){
       fprintf(outputfile,", %ld, %d, %ld, %f, %f\n", distance, h0, nStates, totalTime, nStates/totalTime);
