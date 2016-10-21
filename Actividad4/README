@@ -1,0 +1,25 @@
+COMPILE WITH:
+
+  make  15Puzzle.astar_manhatan N=2 or make  Pancakes28.astar_gap N=2
+  for A* algorithm.
+
+  make  15Puzzle.idastar_manhatan N=2 or make  Pancakes28.idastar_gap N=2
+  for IDA* algorithm.
+
+  N=2 is the length of the suffix for tree pruning that guarantees the
+  best search tree.
+
+RUN:
+
+  ./<ProblemName>.<algorithm>_<heuristic> <inputfile> <outputfile>
+
+	where:
+    <ProblemName> is the problem to be solved. i.e. Pancake28
+    <algorithm>   is the algorithm A* or IDA*
+    <heuristic>   is the heuristic used. GAP for Pancakes and Manhatan for 15Puzzle.
+    <inputfile>   is the file where instances are defined
+    <outputfile>  is where the data will be stored.
+
+RUN EXAMPLE:
+
+  ./Pancakes28.astar_gap ../instances/pancake28.txt results/pancake28.csvs

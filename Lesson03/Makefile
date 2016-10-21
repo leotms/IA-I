@@ -1,7 +1,7 @@
 CC = gcc
 CXX = g++
 OPT = -g -Wall -O3 -Wno-unused-function -Wno-unused-variable
-PSVNOPT = --state_map --no_abstraction --history_len=0
+PSVNOPT = --state_map --no_abstraction --backwards_moves --history_len=0
 
 psvn2c_core.c:
 	cp ../src/psvn2c_core.c ./psvn2c_core.c
@@ -18,14 +18,18 @@ psvn2c_abstraction.c:
 
 .PRECIOUS: %.c
 
-%.astar: %.c ../global/astar.cpp
-	$(CXX) $(OPT) ../global/astar.cpp -include $< -o $@
+%.succ: %.c ../global/succ.c
+	$(CC) $(OPT) ../global/succ.c -include $< -o $@
 	rm -f $*.c
 
-%.idastar: %.c ../global/idastar.cpp
-	$(CXX) $(OPT) ../global/idastar.cpp -include $< -o $@
+%.dist: %.c ../global/dist.cpp
+	$(CXX) $(OPT) ../global/dist.cpp -include $< -o $@
+	rm -f $*.c
+
+%.distSummary: %.c ../global/distSummary.cpp
+	$(CXX) $(OPT) ../global/distSummary.cpp -include $< -o $@
 	rm -f $*.c
 
 .PHONY: clean
 clean:
-	rm -fr *.astar *.idastar psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~
+	rm -fr *.succ *.dist *.distSummary psvn2c_core.c psvn2c_state_map.c psvn2c_abstraction.c *.dSYM *.o *~

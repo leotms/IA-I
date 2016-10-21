@@ -1,0 +1,20 @@
+COMPILE WITH:
+
+  make  15Puzzle.widastar_manhatan N=2
+  or
+  make  Pancakes28.widastar_gap N=2
+  N=2 is the length of the suffix for tree pruning that guarantees the
+  best search tree.
+
+RUN:
+
+  ./15Puzzle.widastar_manhatan <inputfile> <outputfile>
+  or
+  ./Pancakes28.widastar_gap <inputfile> <outputfile>
+
+	where <inputfile> is the file where instances are defined
+  and <outputfile> is where the data will be stored.
+
+RUN EXAMPLE:
+
+  ./Pancakes28.widastar_gap ../instances/pancake28.txt results/pancake28.csv

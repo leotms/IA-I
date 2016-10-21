@@ -65,6 +65,7 @@ struct tuple f_bounded_dfs_visit(state_t state, int history,
   int t = INT_MAX;
   struct tuple paux;
 
+  f = dist + manhatan(state, weigth);
 
   if (is_goal(&state)){
     paux.dist = 0;
@@ -79,7 +80,6 @@ struct tuple f_bounded_dfs_visit(state_t state, int history,
     return paux;
   };
 
-  f = dist + manhatan(state, weigth);
   if (f > bound){
     paux.dist = -1;
     paux.f = f;
@@ -195,7 +195,7 @@ int main(int argc, char **argv ) {
       fprintf(outputfile,", na, %d, na, na, na\n", h0);
     }
   }
-  
+
   fclose(inputfile);
   fclose(outputfile);
   printf("\nResults stored in %s\n",argv[3]);
