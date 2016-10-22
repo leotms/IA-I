@@ -7,7 +7,11 @@
 #include <time.h>
 #include <limits.h>
 
+// Uses Iterative Deepening A* with GAP Heuristic to
+// create an algorithm that solves the
+// Pancakes Problem.
 
+// GAP Heuristic
 int gap(state_t state, float weigth = 1) {
 
   int h = 0;
@@ -33,6 +37,7 @@ float timeinmiliseconds(clock_t start, clock_t stop) {
   return ((float)(stop - start) / CLOCKS_PER_SEC);
 }
 
+// Extracts the problem name from argv[0]
 char * domainname(char * fullname){
 
   char * domain = (char *) malloc(50*sizeof(char));
@@ -41,11 +46,13 @@ char * domainname(char * fullname){
 
 }
 
+// tuple structure for results
 struct tuple {
     int dist;
     int f;
 };
 
+// bounded Depth First Search Visit
 struct tuple f_bounded_dfs_visit(state_t state, int history,
                                  int bound, int dist,
                                  long * nStates, clock_t start){
@@ -107,6 +114,7 @@ struct tuple f_bounded_dfs_visit(state_t state, int history,
   return paux;
 }
 
+// IDA* Serach Algorithm Initialization
 int ida_search(state_t state, int history, long * nStates, clock_t start){
 
   int bound  = gap(state);
@@ -121,7 +129,6 @@ int ida_search(state_t state, int history, long * nStates, clock_t start){
   return -1;
 }
 
-
 int main(int argc, char **argv ) {
 
   state_t state;
@@ -129,7 +136,7 @@ int main(int argc, char **argv ) {
   FILE * outputfile;
 
   if (argc < 3) {
-    printf("Missing argument.\nPlease run with ./<problemname>.idastar <inputfile> <outputfile>\n");
+    printf("Missing argument.\nPlease run with ./<problemname>.idastar_gap <inputfile> <outputfile>\n");
     return 0;
   }
 

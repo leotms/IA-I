@@ -7,7 +7,11 @@
 #include <time.h>
 #include <limits.h>
 
+// Uses Weigthhed Iterative Deepening A* with GAP Heuristic to
+// create an algorithm that solves the
+// Pancakes Problem.
 
+// GAP Heuristic
 int gap(state_t state, float weigth = 1) {
 
   int h = 0;
@@ -32,6 +36,7 @@ float timeinmiliseconds(clock_t start, clock_t stop) {
   return ((float)(stop - start) / CLOCKS_PER_SEC);
 }
 
+// Extracts the problem name from argv[0]
 char * domainname(char * fullname){
 
   char * domain = (char *) malloc(50*sizeof(char));
@@ -40,11 +45,13 @@ char * domainname(char * fullname){
 
 }
 
+// tuple structure for results
 struct tuple {
     int dist;
     int f;
 };
 
+// bounded Depth First Search Visit
 struct tuple f_bounded_dfs_visit(state_t state, int history,
                                  float weigth, int bound, int dist,
                                  long * nStates, clock_t start){
@@ -105,7 +112,8 @@ struct tuple f_bounded_dfs_visit(state_t state, int history,
   return paux;
 }
 
-int ida_search(state_t state, int history, float weigth, long * nStates, clock_t start){
+// WIDA* Search Algorithm Initialization
+int wida_search(state_t state, int history, float weigth, long * nStates, clock_t start){
 
   int bound  = gap(state, weigth);
 
@@ -165,7 +173,7 @@ int main(int argc, char **argv ) {
     // Start clock
     clock_t start = clock();
     while (true) {
-      distance = ida_search(state, history, weigth, &nStates, start);
+      distance = wida_search(state, history, weigth, &nStates, start);
       if (distance >= 0){
         break;
       } else if (distance == -2){
@@ -184,7 +192,7 @@ int main(int argc, char **argv ) {
       fprintf(outputfile,", na, %d, na, na, na\n", h0);
     }
   }
-  
+
   fclose(inputfile);
   fclose(outputfile);
   printf("\nResults stored in %s\n",argv[3]);
