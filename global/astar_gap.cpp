@@ -7,6 +7,11 @@
 #include <time.h>
 #include <limits.h>
 
+// Uses Best First Search with GAP Heuristic to
+// create A* algorithm that solves the
+// Pancakes Problem.
+
+// GAP Heuristic
 int gap(state_t state, float weigth = 1) {
 
   int h = 0;
@@ -27,11 +32,12 @@ int gap(state_t state, float weigth = 1) {
   return h;
 }
 
-// calculates time difference in miliseconds
+// Calculates time difference in miliseconds
 float timeinmiliseconds(clock_t start, clock_t stop) {
   return ((float)(stop - start) / CLOCKS_PER_SEC);
 }
 
+// Extracts the problem name from argv[0]
 char * domainname(char * fullname){
 
   char * domain = (char *) malloc(50*sizeof(char));
@@ -40,8 +46,9 @@ char * domainname(char * fullname){
 
 }
 
+// Expansion function of BFS
 void best_first_search_expansion(state_t state, PriorityQueue<state_t> *open,
-                                 state_map_t * distancias,
+                                 state_map_t * distances,
                                  state_map_t * histories,
                                  long * nStates){
 
@@ -59,15 +66,15 @@ void best_first_search_expansion(state_t state, PriorityQueue<state_t> *open,
 			apply_fwd_rule(ruleid, &state, &child);
 
       int child_history = next_fwd_history(parent_history, ruleid);
-      int dist = *state_map_get(distancias, &state) + get_fwd_rule_cost(ruleid);
+      int dist = *state_map_get(distances, &state) + get_fwd_rule_cost(ruleid);
       int cost = dist + gap(child);
 
       state_map_add(histories, &child, child_history);
 
-      const int *dist_anterior = state_map_get(distancias, &child);
+      const int *dist_anterior = state_map_get(distances, &child);
 
       if (dist_anterior == NULL || *dist_anterior < dist ) {
-        state_map_add(distancias, &child, dist);
+        state_map_add(distances, &child, dist);
         open->Add(cost, cost, child);
       }
     }
@@ -75,20 +82,20 @@ void best_first_search_expansion(state_t state, PriorityQueue<state_t> *open,
 
 }
 
+// BFS
 int best_first_seach(state_t state, long * nStates, clock_t start){
 
   PriorityQueue<state_t> open;
-  state_map_t *distancias = new_state_map();
+  state_map_t *distances = new_state_map();
   state_map_t *histories  = new_state_map();
 
 
-  // Para el primer nodo
+  // first node
   int history = init_history;
   state_map_add(histories, &state, history);
-  state_map_add(distancias, &state, 0);
+  state_map_add(distances, &state, 0);
 
   int costN0 = gap(state);
-  // Agregamos a la cola de prioridades.
   open.Add(costN0, costN0, state);
 
   while(!open.Empty()){
@@ -98,22 +105,22 @@ int best_first_seach(state_t state, long * nStates, clock_t start){
 
     // check if goal
     if (is_goal(&state)){
-      int distance = *state_map_get(distancias, &state);
-      destroy_state_map(distancias);
+      int distance = *state_map_get(distances, &state);
+      destroy_state_map(distances);
       destroy_state_map(histories);
       open.Clear();
       return distance;
     }
     // check if time's up
     if (timeinmiliseconds(start, clock()) > 300.0){
-      destroy_state_map(distancias);
+      destroy_state_map(distances);
       destroy_state_map(histories);
       open.Clear();
-      // Means the algorithm ran more than 5minutes
+      // means the algorithm ran more than 5minutes
       return -2;
     };
 
-    best_first_search_expansion(state, &open, distancias, histories, nStates);
+    best_first_search_expansion(state, &open, distances, histories, nStates);
   }
 
   return -1;
@@ -126,7 +133,7 @@ int main(int argc, char **argv ) {
     FILE * outputfile;
 
     if (argc < 3) {
-      printf("Missing argument.\nPlease run with ./<problemname>.idastar <inputfile> <outputfile>\n");
+      printf("Missing argument.\nPlease run with ./<problemname>.astar_gap <inputfile> <outputfile>\n");
       return 0;
     }
 
