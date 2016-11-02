@@ -2,10 +2,8 @@
 # CI5437 - Inteligencia Artificial I
 ## Proyecto I
 
------------------------------------------
-
 Utilización e implementación de algoritmos y heurísticas para
-resolver los problemas de 15 Puzzle, Torres de Hanoi, TopSpin, Pancakes, usando Lenguaje C y PSVN.
+resolver los problemas de 15 Puzzle, Torres de Hanoi, TopSpin, Pancakes, usando Lenguaje C, C++ y PSVN.
 
 #### Última Modificación
 
